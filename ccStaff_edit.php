@@ -52,10 +52,10 @@ if (isset($_POST['update'])) {
     }
   } else {
     //updating the table
-    $result = mysqli_query($conn, "UPDATE users SET user_type_id='$usertypes',first_name='$firstname', middle_initial='$middleInitial', last_name = '$lastname', email_address='$email', barangay_id='$brgy', city='$city', contact_no='$contact', zip_code = '$zipcode' WHERE id=$user_id");
+    $result = mysqli_query($conn, "UPDATE users SET user_type_id='$usertypes',first_name='$firstname', middle_initial='$middleInitial', last_name = '$lastname', email_address='$email', barangay_id='$brgy', city='$city', contact_no='$contact', zip_code = '$zipcode', date_modified = 'NOW()' WHERE id=$user_id");
 
     //redirectig to the display page. In our case, it is index.php
-    header("Location: resident.php");
+    header("Location: ccStaff.php");
   }
 }
 ?>
@@ -64,7 +64,7 @@ if (isset($_POST['update'])) {
 $id = $_GET['id'];
 
 //selecting data associated with this particular id
-$result = mysqli_query($conn, " SELECT u.id, u.user_type_id AS Roles, u.first_name, u.middle_initial, u.last_name, u.contact_no, u.email_address, u.address,u.barangay_id AS bID, u.city,u.zip_code, u.date_added, b.name AS barangay_name, s.name AS status, ut.name AS role_name FROM users u LEFT JOIN barangays AS b ON u.barangay_id = b.id LEFT JOIN user_statuses AS s ON u.user_status_id = s.id LEFT JOIN user_types AS ut ON u.user_type_id = ut.id WHERE u.user_type_id = 2 AND u.id = '$id'");
+$result = mysqli_query($conn, " SELECT u.id, u.user_type_id AS Roles, u.first_name, u.middle_initial, u.last_name, u.contact_no, u.email_address, u.address,u.barangay_id AS bID, u.city,u.zip_code, u.date_added, b.name AS barangay_name, s.name AS status, ut.name AS role_name FROM users u LEFT JOIN barangays AS b ON u.barangay_id = b.id LEFT JOIN user_statuses AS s ON u.user_status_id = s.id LEFT JOIN user_types AS ut ON u.user_type_id = ut.id WHERE u.user_type_id = 5 AND u.id = '$id'");
 
 while ($row = mysqli_fetch_array($result)) {
   $usertypesid = $row['Roles'];
@@ -99,7 +99,7 @@ while ($row = mysqli_fetch_array($result)) {
                   <div class="text-left">
                     <h1 class="h1 text-gray-900 mb-4">Edit <?php echo $firstname . ' ' . $middleInitial . ' ' . $lastname; ?></h1>
                   </div>
-                  <form action="resident_edit.php" method="POST">
+                  <form action="ccStaff_edit.php" method="POST">
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                     <label>Roles:</label>
                     <div class="form-group">
@@ -143,7 +143,7 @@ while ($row = mysqli_fetch_array($result)) {
                     <label>Barangay</label>
                     <div class="form-group">
                       <select class="form-control" name="barangay" aria-label="Default select example">
-                        <option value="<?php echo $brgyID; ?>"><?php echo $brgy; ?></option>
+                        <option value="<?php echo $brgyID; ?>">><?php echo $brgy; ?></option>
                         <?php
                         $sql = "SELECT * FROM barangays";
                         $row = mysqli_query($conn, $sql);
@@ -168,7 +168,7 @@ while ($row = mysqli_fetch_array($result)) {
                     </div>
 
                     <input type="submit" name="update" class="btn btn-success btn-sm btn-flat" value="Update">
-                    <a href="resident.php" class="btn btn-danger btn-sm  btn-flat"> Close </a>
+                    <a href="ccStaff.php" class="btn btn-danger btn-sm  btn-flat"> Close </a>
                   </form>
                   <hr>
 

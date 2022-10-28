@@ -6,7 +6,7 @@
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="img/logo/logo.png" width="50px" height="50px">
+          <img src="../img/logo/logo.png" width="50px" height="50px">
         </div>
         <div class="sidebar-brand-text mx-3">One-Tap Alert Admin</div>
       </a>
@@ -20,44 +20,11 @@
       <div class="sidebar-heading">
         Features
       </div>
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-          <i class="far fa-fw fa-window-maximize"></i>
-          <span>Users Registration Approval</span>
+      <li class="nav-item">
+        <a class="nav-link" href="ffetaps.php">
+          <i class="fas fa-fw fa-palette"></i>
+          <span>Resident FFE Emergency Taps</span>
         </a>
-        <div id="collapse1" class="collapse show" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Users</h6>
-            <a class="collapse-item" href="residentapproval.php">Residents <span class="btn btn-success btn-sm btn-flat">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '2' AND user_status_id = '1'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?></span></a>
-            <a class="collapse-item active" href="responderapproval.php">Responders<span class="btn btn-success btn-sm btn-flat">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '3' AND user_status_id = '1'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?></span></a>
-            <a class="collapse-item" href="commandStaffApproval.php">Command Center Staff<span class="btn btn-success btn-sm btn-flat">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '4' AND user_status_id = '1'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?></span></a>
-            <a class="collapse-item" href="barangayStaffApproval.php">Barangay Staff<span class="btn btn-success btn-sm btn-flat">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '5' AND user_status_id = '1'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?></span></a>
-          </div>
-        </div>
       <li class="nav-item">
         <a class="nav-link" href="request_backup.php">
           <i class="fas fa-fw fa-palette"></i>
@@ -68,24 +35,19 @@
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="far fa-fw fa-window-maximize"></i>
-          <span>Users</span>
+          <span>Incident Reports</span>
         </a>
         <div id="collapseBootstrap" class="collapse show" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Users</h6>
-            <a class="collapse-item" href="admin.php">Admin</a>
-            <a class="collapse-item" href="resident.php">Residents</a>
-            <a class=" collapse-item active" href="responder.php">Responders</a>
-            <a class="collapse-item" href="ccStaff.php">Command Center Staff</a>
-            <a class="collapse-item" href="brgyStaff.php">Barangay Staff</a>
+            <a class="collapse-item" href="fire.php">Fire</a>
+            <a class="collapse-item" href="flood.php">Flood</a>
+            <a class=" collapse-item active" href="Earthquake.php">Eartquake</a>
+            <a class="collapse-item" href="overall.php">Overall Reports</a>
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="barangays.php">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>Barangays</span>
-        </a>
+
       </li>
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
@@ -172,7 +134,7 @@
                 </h6>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/man.png" style="max-width: 60px" alt="">
+                    <img class="rounded-circle" src="../img/man.png" style="max-width: 60px" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div class="font-weight-bold">
@@ -183,7 +145,7 @@
                 </a>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/girl.png" style="max-width: 60px" alt="">
+                    <img class="rounded-circle" src="../img/girl.png" style="max-width: 60px" alt="">
                     <div class="status-indicator bg-default"></div>
                   </div>
                   <div>
@@ -240,7 +202,7 @@
             <div class="topbar-divider d-none d-sm-block"></div>
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
+                <img class="img-profile rounded-circle" src="../img/boy.png" style="max-width: 60px">
                 <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

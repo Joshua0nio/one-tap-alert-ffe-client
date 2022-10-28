@@ -1,46 +1,65 @@
 <?php include "includes/conn.php"; ?>
 
 <?php
-if (isset($_POST['submit'])) {
+error_reporting(0);
 
-  $usertypes = $_POST['role'];
-  $firstname = $_POST['firstname'];
-  $middleInitial = $_POST['MI'];
-  $lastname = $_POST['lastname'];
-  $username = $_POST['username'];
-  $password = $_POST['pass'];
-  $repassword = $_POST['repass'];
-  $email = $_POST['email'];
-  $brgy = $_POST['barangay'];
-  $city = $_POST['city'];
-  $contact = $_POST['contactno'];
-  $zipcode = $_POST['zip'];
-  $photo1 = $_FILES['front']['name'];
-  $photo2 = $_FILES['back']['name'];
-  $photo3 = $_FILES['photo']['name'];
-  if (!empty($photo)) {
-    move_uploaded_file($_FILES['front']['tmp_name'], '/img/images/' . $photo);
-    $filename1 = $photo1;
+$msg = "";
+
+// If upload button is clicked ...
+if (isset($_POST['upload'])) {
+
+  $filename = $_FILES["uploadfile"]["name"];
+  $tempname = $_FILES["uploadfile"]["tmp_name"];
+  $folder = "img/images/photo" . $filename;
+
+  // Get all the submitted data from the form
+  $sql = "INSERT INTO users (captured_image_selfie) VALUES ('$filename')";
+
+  // Execute query
+  mysqli_query($conn, $sql);
+
+  // Now let's move the uploaded image into the folder: image
+  if (move_uploaded_file($tempname, $folder)) {
+    echo "<h3>  Image uploaded successfully!</h3>";
   } else {
-    $filename1 = $user['front'];
-  }
-  if (!empty($photo2)) {
-    move_uploaded_file($_FILES['back']['tmp_name'], '/img/images/' . $photo2);
-    $filename2 = $photo2;
-  } else {
-    $filename2 = $user['back'];
-  }
-  if (!empty($photo3)) {
-    move_uploaded_file($_FILES['photo']['tmp_name'], '/img/images/' . $photo3);
-    $filename3 = $photo3;
-  } else {
-    $filename3 = $user['photo'];
-  }
-  $query = "INSERT INTO 'users' ('email_address', 'contact_no', 'username', 'password','user_type_id', 'first_name', 'middle_initial','last_name','zip_code', 'address', 'city', 'user_status_id', 'capture_image_front_id', 'capture_image_back_id', 'captured_image_selfie', 'date_added') VALUES ('$email', '$contact', '$username', '$password', '$usertypes', '$firstname','$middleInitial','$lastname','$zipcode', '$address','$city', '1', '$filename1', '$filename2', '$filename3',CURRENT_TIMESTAMP)";
-  if (mysqli_query($conn->query($query) === TRUE) {
-    echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
-  } else {
-    echo "<script>alert('Unknown error occured.')</script>";
+    echo "<h3>  Failed to upload image!</h3>";
   }
 }
 ?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Image Upload</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+  <div id="content">
+    <form method="POST" action="" enctype="multipart/form-data">
+      <div class="form-group">
+        <input class="form-control" type="file" name="uploadfile" value="" />
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+      </div>
+    </form>
+  </div>
+  <div id="display-image">
+    <?php
+    $query = " select * from image ";
+    $result = mysqli_query($conn, $query);
+
+    while ($data = mysqli_fetch_assoc($result)) {
+    ?>
+      <img src="./image/<?php echo $data['filename']; ?>">
+
+    <?php
+    }
+    ?>
+  </div>
+</body>
+
+</html>

@@ -32,8 +32,9 @@
             </tr>
           </thead>
           <tfoot>
-            <?php
-            $sql = "SELECT
+            <tbody>
+              <?php
+              $sql = "SELECT
             u.id,
               u.first_name,
               u.middle_initial,
@@ -49,27 +50,27 @@
           LEFT JOIN barangays AS b
             ON u.barangay_id = b.id
           WHERE u.user_type_id = 1;";
-            $query = $conn->query($sql);
-            while ($row = $query->fetch_assoc()) {
-            ?>
-              <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name']; ?></td>
-                <td><?php echo $row['contact_no']; ?></td>
-                <td><?php echo $row['email_address']; ?></td>
-                <td><?php echo $row['Address']; ?></td>
-                <td><?php echo $row['barangay_name']; ?></td>
-                <td><?php echo $row['city']; ?></td>
-                <td><?php echo $row['zip_code']; ?></td>
-                <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
-                <td>
-                  <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $row['ID']; ?>"><i class="fa fa-edit"></i> Edit</button>
-                  <button class="btn btn-danger btn-sm delete btn-flat" data-id="<?php echo $row['ID']; ?>"><i class="fa fa-trash"></i> Delete</button>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
+              $query = $conn->query($sql);
+              while ($row = $query->fetch_assoc()) {
+              ?>
+                <tr>
+                  <td><?php echo $row['id']; ?></td>
+                  <td><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name']; ?></td>
+                  <td><?php echo $row['contact_no']; ?></td>
+                  <td><?php echo $row['email_address']; ?></td>
+                  <td><?php echo $row['address']; ?></td>
+                  <td><?php echo $row['barangay_name']; ?></td>
+                  <td><?php echo $row['city']; ?></td>
+                  <td><?php echo $row['zip_code']; ?></td>
+                  <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
+                  <td>
+                    <a href=" admin_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i>Edit</a>
+                    <a href=" admin_delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm  btn-flat"><i class="fa fa-trash"></i> Delete</a>
+                  </td>
+                </tr>
+              <?php
+              }
+              ?>
             </tbody>
         </table>
       </div>

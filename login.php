@@ -3,8 +3,7 @@
 //login login 
 session_start();
 include "includes/conn.php";
-
-if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['role'])) {
+if (isset($_POST['submit'])) {
 
   function test_input($data)
   {
@@ -19,9 +18,9 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['role
   $role = test_input($_POST['role']);
 
   if (empty($username)) {
-    header("Location: login-index.php?error=User Name is Required");
+    header("Location: index.php?error=User Name is Required");
   } else if (empty($password)) {
-    header("Location: login-index.php?error=Password is Required");
+    header("Location: index.php?error=Password is Required");
   } else {
 
     // Hashing function
@@ -30,16 +29,22 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['role
     $sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND user_status_id = '2'";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) === 1) {
+    if (mysqli_num_rows($result) > 0) {
 
-      $row = mysqli_fetch_assoc($result);
-      if ($row['password'] === $password && $row['role'] == $role) {
+      $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      if ($row['password'] == $password && $row['user_type_id'] == $role) {
         $_SESSION['name'] = $row['name'];
         $_SESSION['id'] = $row['id'];
-        $_SESSION['role'] = $row['role'];
+        $_SESSION['role'] = $row['user_type_id'];
         $_SESSION['username'] = $row['username'];
 
-        header("Location: redirect.php");
+        if ($row['user_type_id'] == 1) {
+          header("Location: dashboard.php");
+        } else if ($row['user_type_id'] == 4) {
+          header("Location: barangay_command_staff/dashboard.php");
+        } else if ($row['user_type_id'] == 5) {
+          header("Location: barangay_command_staff/dashboard.php");
+        }
       } else {
         header("Location: index.php?error=Incorect User name or password");
       }
@@ -50,3 +55,5 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['role
 } else {
   header("Location: index.php");
 }
+
+ // echo $_POST['username'];

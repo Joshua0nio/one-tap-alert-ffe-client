@@ -1,6 +1,6 @@
 <?php include "navbars.php"; ?>
 <?php
-include 'includes/timezone.php';
+include '../includes/timezone.php';
 $today = date('Y-m-d');
 $year = date('Y');
 if (isset($_GET['year'])) {
@@ -24,10 +24,10 @@ if (isset($_GET['year'])) {
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Residents</div>
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Fire</div>
               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '2'";
+                $sql = "SELECT * FROM emergencies WHERE emergency_type_id = '1'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
@@ -50,10 +50,10 @@ if (isset($_GET['year'])) {
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Responders</div>
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Flood</div>
               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '3'";
+                $sql = "SELECT * FROM emergencies WHERE emergency_type_id = '2'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
@@ -75,10 +75,10 @@ if (isset($_GET['year'])) {
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Barangay Staff</div>
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Earthquake</div>
               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '4'";
+                $sql = "SELECT * FROM emergencies WHERE emergency_type_id = '3'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
@@ -100,10 +100,10 @@ if (isset($_GET['year'])) {
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Command Center Staff</div>
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Not Responded</div>
               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '5'";
+                $sql = "SELECT * FROM emergencies WHERE emergency_type_id = '3'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
@@ -112,83 +112,6 @@ if (isset($_GET['year'])) {
               <div class="mt-2 mb-0 text-muted text-xs">
                 <a href="ccStaff.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-users fa-2x text-info"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Barangays</div>
-              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                <?php
-                $sql = "SELECT * FROM barangays";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?>
-              </div>
-              <div class="mt-2 mb-0 text-muted text-xs">
-                <a href="barangays.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-users fa-2x text-info"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Pending Requests</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_status_id = '1'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?>
-              </div>
-              <div class="mt-2 mb-0 text-muted text-xs">
-              </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-comments fa-2x text-warning"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Approved Requests</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                <?php
-                $sql = "SELECT * FROM users WHERE user_status_id = '2'";
-                $query = $conn->query($sql);
-
-                echo "<h3>" . $query->num_rows . "</h3>";
-                ?>
-              </div>
-              <div class="mt-2 mb-0 text-muted text-xs">
-              </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-comments fa-2x text-warning"></i>
             </div>
           </div>
         </div>
@@ -228,29 +151,30 @@ if (isset($_GET['year'])) {
           </div>
         </div>
       </div>
-
-
-
-      <!-- Modal Logout -->
-
-
     </div>
-    <!---Container Fluid-->
+
+
+
+    <!-- Modal Logout -->
+
+
   </div>
-  <!-- Footer -->
-  <footer class="sticky-footer bg-white">
-    <div class="container my-auto">
-      <div class="copyright text-center my-auto">
-      </div>
+  <!---Container Fluid-->
+</div>
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
     </div>
+  </div>
 
-    <div class="container my-auto py-2">
-      <div class="copyright text-center my-auto">
+  <div class="container my-auto py-2">
+    <div class="copyright text-center my-auto">
 
-      </div>
     </div>
-  </footer>
-  <!-- Footer -->
+  </div>
+</footer>
+<!-- Footer -->
 </div>
 </div>
 
@@ -259,12 +183,12 @@ if (isset($_GET['year'])) {
   <i class="fas fa-angle-up"></i>
 </a>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/ruang-admin.min.js"></script>
-<script src="vendor/chart.js/Chart.min.js"></script>
-<script src="js/demo/chart-area-demo.js"></script>
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../js/ruang-admin.min.js"></script>
+<script src="../vendor/chart.js/Chart.min.js"></script>
+<script src="../js/demo/chart-area-demo.js"></script>
 <?php
 $and = 'AND YEAR(date_added) = ' . $year;
 $months = array();
@@ -301,7 +225,7 @@ $earthquake = json_encode($earthquake);
 $notresponded = json_encode($notresponded);
 
 ?>
-<?php include 'includes/scripts.php'; ?>
+<?php include '../includes/scripts.php'; ?>
 <script>
   $(function() {
     var barChartCanvas = $('#barChart').get(0).getContext('2d')

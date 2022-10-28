@@ -37,7 +37,7 @@
             <tbody>
               <?php
               $sql = "SELECT
-            u.id AS ID,
+            u.id,
               u.first_name,
               u.middle_initial,
               u.last_name,
@@ -59,7 +59,7 @@
               while ($row = $query->fetch_assoc()) {
               ?>
                 <tr>
-                  <td><?php echo $row['ID']; ?></td>
+                  <td><?php echo $row['id']; ?></td>
                   <td><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name']; ?></td>
                   <td><?php echo $row['contact_no']; ?></td>
                   <td><?php echo $row['email_address']; ?></td>
@@ -70,8 +70,8 @@
                   <td><?php echo $row['status']; ?></td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
                   <td>
-                    <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $row['ID']; ?>"><i class="fa fa-edit"></i> Edit</button>
-                    <button class="btn btn-danger btn-sm delete btn-flat" data-id="<?php echo $row['ID']; ?>"><i class="fa fa-trash"></i> Delete</button>
+                    <a href=" ccStaff_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i>Edit</a>
+                    <a href=" ccStaff_delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm  btn-flat"><i class="fa fa-trash"></i> Delete</a>
                   </td>
                 </tr>
               <?php
