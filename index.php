@@ -19,66 +19,88 @@
 session_start();
 //if (!isset($_SESSION['username']) && !isset($_SESSION['id'])) {   
 ?>
+<style>
+  body,
+  html {
+    height: 100%;
+    margin: 0;
+  }
 
+  .bg {
+    /* The image used */
 
+    background-image: url("img/bg.jpg");
 
-<body class="bg-gradient-login">
+    /* Full height */
+    height: 150%;
 
-  <!-- Login Content -->
-  <div class="container-login">
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
 
-    <div class="row justify-content-center">
+<div class="bg">
 
-      <div class="col-xl-6 col-lg-12 col-md-9">
-        <div class="card shadow-sm my-5">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="login-form">
-                  <center><img src="img/logo/logo.png" width="300px" height="300px"></center>
-                  <div class="text-center">
-                    <h1 class="h1 text-gray-900 mb-4">Login</h1>
-                  </div>
-                  <form class="user" action="login.php" method="POST">
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Username" name="username">
+  <body class="bg-gradient-login ">
+
+    <!-- Login Content -->
+    <div class="container-login">
+
+      <div class="row justify-content-center ">
+
+        <div class="col-xl-6 col-lg-12 col-md-9">
+          <div class="card shadow-sm my-5">
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="login-form">
+                    <center><img src="img/logo/logo.png" width="300px" height="300px"></center>
+                    <div class="text-center">
+                      <h1 class="h1 text-gray-900 mb-4">Login</h1>
                     </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password">
-                    </div>
-
-                    <label>Roles:</label>
-                    <div class="form-group">
-                      <select class="form-control" aria-label="Default select example" name="role">
-                        <option selected>Select your Role:</option>
-                        <option value="1">Admin</option>
-                        <option value="4">Barangay Staff</option>
-                        <option value="5">Command Center Staff</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember
-                          Me</label>
+                    <form class="user" action="login.php" method="POST">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Username" name="username">
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <input type="submit" class="btn btn-primary btn-block" name="submit" value="Login">
-                    </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password">
+                      </div>
+
+                      <label>Roles:</label>
+                      <div class="form-group">
+                        <select class="form-control" aria-label="Default select example" name="role">
+                          <option selected>Select your Role:</option>
+                          <option value="1">Admin</option>
+                          <option value="4">Barangay Staff</option>
+                          <option value="5">Command Center Staff</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
+                          <input type="checkbox" class="custom-control-input" id="customCheck">
+                          <label class="custom-control-label" for="customCheck">Remember
+                            Me</label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input type="submit" class="btn btn-primary btn-block" name="submit" value="Login">
+                      </div>
+                      <hr>
+                      <div class="text-center">
+                        <?php if (isset($_GET['error'])) { ?>
+                          <div class="alert alert-danger" role="alert">
+                            <?= $_GET['error'] ?>
+                          </div>
+                        <?php } ?>
+                    </form>
                     <hr>
                     <div class="text-center">
-                      <?php if (isset($_GET['error'])) { ?>
-                        <div class="alert alert-danger" role="alert">
-                          <?= $_GET['error'] ?>
-                        </div>
-                      <?php } ?>
-                  </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="font-weight-bold small" href="register.php">Create an Account!</a>
-                  </div>
+                      <a class="font-weight-bold small" href="register.php">Create an Account!</a>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
@@ -86,13 +108,13 @@ session_start();
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  <!-- Login Content -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/ruang-admin.min.js"></script>
+</div>
+</div>
+<!-- Login Content -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/ruang-admin.min.js"></script>
 </body>
 
 </html>

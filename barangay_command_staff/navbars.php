@@ -25,12 +25,6 @@
           <i class="fas fa-fw fa-palette"></i>
           <span>Resident FFE Emergency Taps</span>
         </a>
-      <li class="nav-item">
-        <a class="nav-link" href="request_backup.php">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>Request Backup Support</span>
-        </a>
-      </li>
       </li>
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true" aria-controls="collapseBootstrap">
@@ -244,7 +238,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                <a href="login.html" class="btn btn-primary">Logout</a>
+                <a href="index.php" class="btn btn-primary">Logout</a>
               </div>
             </div>
           </div>

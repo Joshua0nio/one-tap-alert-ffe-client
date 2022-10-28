@@ -20,52 +20,32 @@
           <thead class="thead-light">
             <th>ID</th>
             <th>Name</th>
-            <th>Contact No.</th>
-            <th>Email Address</th>
-            <th>Address</th>
-            <th>Barangay</th>
-            <th>City</th>
-            <th>Zip Code</th>
+            <th>Disaster Type</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Incident Date</th>
             </tr>
           </thead>
           <tfoot>
             <tbody>
               <?php
-              $sql = "SELECT
-            u.id,
-              u.first_name,
-              u.middle_initial,
-              u.last_name,
-              u.contact_no,
-              u.email_address,
-              u.address,
-              u.city,
-              u.zip_code,
-              u.date_added,
-              b.name AS barangay_name
-          FROM users u
-          LEFT JOIN barangays AS b
-            ON u.barangay_id = b.id
-          WHERE u.user_type_id = 1;";
-              $query = $conn->query($sql);
-              while ($row = $query->fetch_assoc()) {
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+
+              $sql = "SELECT *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.last_name, u.user_type_id, et.name AS disaster, es.name AS status FROM emergencies AS e LEFT JOIN users AS u ON e.user_id = u.id LEFT JOIN emergency_types AS et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses AS es ON e.emergency_status_id = es.id WHERE u.user_type_id = 2 AND e.date_added = '$date'";
+              $result = mysqli_query($conn, $sql);
+              while ($row = $result->fetch_assoc()) {
               ?>
                 <tr>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name']; ?></td>
-                  <td><?php echo $row['contact_no']; ?></td>
-                  <td><?php echo $row['email_address']; ?></td>
-                  <td><?php echo $row['address']; ?></td>
-                  <td><?php echo $row['barangay_name']; ?></td>
-                  <td><?php echo $row['city']; ?></td>
-                  <td><?php echo $row['zip_code']; ?></td>
+                  <td><?php echo $row['disaster']; ?></td>
+                  <td><?php echo $row['longitude']; ?></td>
+                  <td><?php echo $row['latitude']; ?></td>
+                  <td><?php echo $row['status']; ?></td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
-                  <td>
-                    <a href=" admin_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i>Edit</a>
-                    <a href=" admin_delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm  btn-flat"><i class="fa fa-trash"></i> Delete</a>
-                  </td>
                 </tr>
               <?php
               }
@@ -74,15 +54,29 @@
         </table>
       </div>
     </div>
+
   </div>
+
 </div>
 <!--Row-->
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">Marker Google Maps</div>
+      <div class="panel-body">
+        <div id="mapCanvas" style="width: 700px; height: 600px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>
 <!---Container Fluid-->
+
 </div>
 
 <!-- Footer -->
+
 <!-- Footer -->
 </div>
 </div>
@@ -99,13 +93,85 @@
 <!-- Page level plugins -->
 <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBY02OUe-MycQkDSpFvc3w9Qrab5mA7uz4&callback=initMap"></script>
 <!-- Page level custom scripts -->
 <script>
   $(document).ready(function() {
     $('#dataTable').DataTable(); // ID From dataTable 
     $('#dataTableHover').DataTable(); // ID From dataTable with Hover
   });
+</script>
+<script>
+  function initMap() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+      mapTypeId: 'roadmap'
+    };
+
+    // Display a map on the web page
+    map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
+    map.setTilt(100);
+
+    // Multiple markers location, latitude, and longitude
+    var markers = [
+      <?php
+      $result = mysqli_query($conn, "select *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.lastname, u.user_type_id, et.name AS disaster,  es.name AS status from emergencies e LEFT JOIN users u ON e.user_id = u.id LEFT JOIN emergency_types et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses es ON e.emergency_status_id = es.id WHERE u.user_type_id = 2 ");
+      if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+          echo '["' . $row['first_name'] . '","' . $row['last_name'] . '", ' . $row['latitude'] . ', ' . $row['longitude'] . ', "' . $row['status'] . '"],';
+        }
+      }
+      ?>
+    ];
+
+    // Info window content
+    var infoWindowContent = [
+      <?php if ($result2->num_rows > 0) {
+        while ($row = $result2->fetch_assoc()) { ?>['<div class="info_content">' +
+            '<h3><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name'];  ?></h3>' +
+            '<p><?php echo $row['status']; ?></p>' + '</div>'],
+      <?php }
+      }
+      ?>
+    ];
+
+    // Add multiple markers to map
+    var infoWindow = new google.maps.InfoWindow(),
+      marker, i;
+
+    // Place each marker on the map  
+    for (i = 0; i < markers.length; i++) {
+      var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+      bounds.extend(position);
+      marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        icon: markers[i][3],
+        title: markers[i][0]
+      });
+
+      // Add info window to marker    
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infoWindow.setContent(infoWindowContent[i][0]);
+          infoWindow.open(map, marker);
+        }
+      })(marker, i));
+
+      // Center the map to fit all markers on the screen
+      map.fitBounds(bounds);
+    }
+
+    // Set zoom level
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+      this.setZoom(14);
+      google.maps.event.removeListener(boundsListener);
+    });
+  }
+
+  // Load initialize function
+  google.maps.event.addDomListener(window, 'load', initMap);
 </script>
 
 </body>

@@ -103,7 +103,7 @@ if (isset($_GET['year'])) {
               <div class="text-xs font-weight-bold text-uppercase mb-1">Not Responded</div>
               <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                 <?php
-                $sql = "SELECT * FROM emergencies WHERE emergency_type_id = '3'";
+                $sql = "SELECT * FROM emergencies WHERE emergency_status_id = '4'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
