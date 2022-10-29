@@ -12,26 +12,27 @@ if (isset($_POST['submit'])) {
   $middleInitial = $_POST['MI'];
   $lastname = $_POST['lastname'];
   $username = $_POST['username'];
-  $password = $_POST['pass'];
-  $repassword = $_POST['repass'];
+  $password =  md5($_POST['pass']);
+  $repassword =  md5($_POST['repass']);
   $email = $_POST['email'];
   $brgy = $_POST['barangay'];
   $city = $_POST['city'];
+  $status = "1";
   $address = $_POST['address'];
   $contact = $_POST['contactno'];
   $zipcode = $_POST['zip'];
 
   $filename1 = $_FILES["front"]["name"];
   $tempname1 = $_FILES["front"]["tmp_name"];
-  $folder1 = "img/images/front" . $filename1;
+  $folder1 = "img/images/front/" . $filename1;
 
   $filename2 = $_FILES["back"]["name"];
   $tempname2 = $_FILES["back"]["tmp_name"];
-  $folder2 = "img/images/back" . $filename2;
+  $folder2 = "img/images/back/" . $filename2;
 
   $filename3 = $_FILES["photo"]["name"];
   $tempname3 = $_FILES["photo"]["tmp_name"];
-  $folder3 = "img/images/photo" . $filename3;
+  $folder3 = "img/images/photo/" . $filename3;
   //   move_uploaded_file($_FILES['front']['tmp_name'], "/img/images/front" . $_FILES['front']['name']);
   //   $front = "/img/images" . $_FILES['front']['name'];
   // }
@@ -39,23 +40,34 @@ if (isset($_POST['submit'])) {
   //   move_uploaded_file($_FILES['back']['tmp_name'], "/img/images/back" . $_FILES['back']['name']);
   //   $back = "/img/images" . $_FILES['back']['name'];
   //$photoFileName = basename($_FILES['photo']['name']);
+  $query = "INSERT INTO users(`email_address`,`contact_no`,`username`,`password`,`user_type_id`,`first_name`,`middle_initial`,`last_name`,`zip_code`,`address`,`barangay_id`,`city`,`user_status_id`,`captured_image_front_id`,`captured_image_back_id`,`captured_image_selfie`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $stmt = mysqli_prepare($conn, $query);
+  mysqli_stmt_bind_param($stmt, 'ssssssssssssssss', $email, $contact, $username, $password, $usertypes, $firstname, $middleInitial, $lastname, $zipcode, $address, $brgy,  $city, $status, $filename1, $filename2, $filename3);
+
+
   // $query = "INSERT INTO users('email_address', 'contact_no', 'username', 'password','user_type_id', 'first_name', 'middle_initial','last_name','zip_code', 'address', 'barangay_id', 'city', 'user_status_id', 'capture_image_front_id', 'capture_image_back_id', 'captured_image_selfie') VALUES ('" . $email . "', '" . $contact . "', 
   // '" . $username . "', '" . $password . "', '" . $usertypes . "', '" . $firstname . "', '" . $middleInitial . "', '" . $lastname . "', '" . $zipcode . "', 
   // '" . $address . "', '" . $brgy . "','" . $city . "', '" . 1 . "', '" . $filename1 . "', '" . $filename2 . "' ,'" . $filename3 . "')";
-  $query = "INSERT INTO users('email_address', 'contact_no', 'username', 'password','user_type_id', 'first_name', 'middle_initial','last_name','zip_code', 'address', 'barangay_id', 'city', 'user_status_id', 'capture_image_front_id', 'capture_image_back_id', 'captured_image_selfie') VALUES ('$email', '$contact', '$username', '$password', '$usertypes', '$firstname','$middleInitial','$lastname','$zipcode',  '$address', '$brgy','$city', '1', '$filename1', '$filename2', '$filename3')";
-  if (mysqli_query($conn, $query)) {
+  if (mysqli_stmt_execute($stmt)) {
     move_uploaded_file($tempname1, $folder1);
     move_uploaded_file($tempname2, $folder2);
     move_uploaded_file($tempname3, $folder3);
+    echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
+  } else {
+    $_SESSION['error'] = $conn->error;
+  }
+
+  if (!mysqli_stmt_execute($stmt)) {
+
     // }
     // if ($_FILES['photo']['name']) {
     //   move_uploaded_file($_FILES['photo']['tmp_name'], "/img/images/photo" . $_FILES['photo']['name']);
     //   $photo = "/img/images" . $_FILES['']['name'];
     //   $photoFileName = basename($_FILES['photo']['name']);
     // }
-    echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
+
   } else {
-    echo "<script>alert('Unknown error occured.')</script>";
+    echo "<script>alert(" . $stmt->error . ")</script>";
   }
   header('location: register.php');
 }
@@ -68,7 +80,8 @@ if (isset($_POST['submit'])) {
   }
 
   .bg {
-    /* The image used */
+    /* filter: blur(8px);
+    -webkit-filter: blur(8px); */
 
     background-image: url("img/bg.jpg");
 

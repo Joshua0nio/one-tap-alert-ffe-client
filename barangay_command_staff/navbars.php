@@ -33,10 +33,10 @@
         </a>
         <div id="collapseBootstrap" class="collapse show" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Users</h6>
+            <h6 class="collapse-header">Disasters</h6>
             <a class="collapse-item" href="fire.php">Fire</a>
             <a class="collapse-item" href="flood.php">Flood</a>
-            <a class=" collapse-item active" href="Earthquake.php">Eartquake</a>
+            <a class=" collapse-item " href="Earthquake.php">Eartquake</a>
             <a class="collapse-item" href="overall.php">Overall Reports</a>
           </div>
         </div>
@@ -238,7 +238,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                <a href="index.php" class="btn btn-primary">Logout</a>
+                <a href="../index.php" class="btn btn-primary">Logout</a>
               </div>
             </div>
           </div>

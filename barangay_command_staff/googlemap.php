@@ -34,7 +34,7 @@
               $date = date("Y-m-d");
               $time = date("H:i:s");
 
-              $sql = "SELECT *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.last_name, u.user_type_id, et.name AS disaster, es.name AS status FROM emergencies AS e LEFT JOIN users AS u ON e.user_id = u.id LEFT JOIN emergency_types AS et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses AS es ON e.emergency_status_id = es.id WHERE e.emergency_status_id = 1 AND e.date_added = '$date'";
+              $sql = "SELECT *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.last_name, u.user_type_id, et.name AS disaster, es.name AS status FROM emergencies AS e LEFT JOIN users AS u ON e.user_id = u.id LEFT JOIN emergency_types AS et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses AS es ON e.emergency_status_id = es.id WHERE u.user_type_id = 2 AND e.date_added = '$date'";
               $result = mysqli_query($conn, $sql);
               while ($row = $result->fetch_assoc()) {
               ?>
@@ -56,7 +56,7 @@
           <div class="co l-md-8">
             <div class="panel panel-default">
               <div class="panel-body">
-                <div id="map" style="width: 910px; height: 600px;"></div>
+                <div id="map-canvas" style="width: 910px; height: 600px;"></div>
               </div>
             </div>
           </div>
@@ -101,77 +101,86 @@
     $('#dataTableHover').DataTable(); // ID From dataTable with Hover
   });
 </script>
-<!-- <script>
-  function initMap() {
-    var map;
-    var bounds = new google.maps.LatLngBounds();
+<?php
+date_default_timezone_set("Asia/Manila");
+$date = date("Y-m-d");
+$time = date("H:i:s");
+$query =  $conn->query("SELECT *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.last_name, u.user_type_id, et.name AS disaster, es.name AS status FROM emergencies AS e LEFT JOIN users AS u ON e.user_id = u.id LEFT JOIN emergency_types AS et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses AS es ON e.emergency_status_id = es.id WHERE u.user_type_id = 2 ");
+//$number_of_rows = mysql_num_rows($db);  
+//echo $number_of_rows;
+
+while ($row = $query->fetch_assoc()) {
+  $name = $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name'];
+  $longitude = $row['longitude'];
+  $latitude = $row['latitude'];
+  /* Each row is added as a new array */
+  $locations[] = array('name' => $name, 'lat' => $latitude, 'lng' => $longitude);
+}
+?>
+<script type="text/javascript">
+  var map;
+  var Markers = {};
+  var infowindow;
+  var locations = [
+    <?php for ($i = 0; $i < sizeof($locations); $i++) {
+      $j = $i + 1; ?>[
+        'AMC Service',
+        '<p><a href="<?php echo $locations[0]['lnk']; ?>">Book this Person Now</a></p>',
+        <?php echo $locations[$i]['lat']; ?>,
+        <?php echo $locations[$i]['lng']; ?>,
+        0
+      ] <?php if ($j != sizeof($locations)) echo ",";
+      } ?>
+  ];
+  var origin = new google.maps.LatLng(locations[0][2], locations[0][3]);
+
+  function initialize() {
     var mapOptions = {
-      mapTypeId: 'roadmap'
+      zoom: 9,
+      center: origin
     };
 
-    // Display a map on the web page
-    map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
-    map.setTilt(100);
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    // Multiple markers location, latitude, and longitude
-    var markers = [
+    infowindow = new google.maps.InfoWindow();
 
-    ];
-
-    // Info window content
-    var infoWindowContent = [
-      <?php if ($result2->num_rows > 0) {
-        while ($row = $result2->fetch_assoc()) { ?>['<div class="info_content">' +
-            '<h3><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name'];  ?></h3>' +
-            '<p><?php echo $row['status']; ?></p>' + '</div>'],
-      <?php }
-      }
-      ?>
-    ];
-
-    // Add multiple markers to map
-    var infoWindow = new google.maps.InfoWindow(),
-      marker, i;
-
-    // Place each marker on the map  
-    for (i = 0; i < markers.length; i++) {
-      var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-      bounds.extend(position);
-      marker = new google.maps.Marker({
+    for (i = 0; i < locations.length; i++) {
+      var position = new google.maps.LatLng(locations[i][2], locations[i][3]);
+      var marker = new google.maps.Marker({
         position: position,
         map: map,
-        icon: markers[i][3],
-        title: markers[i][0]
       });
-
-      // Add info window to marker    
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
-          infoWindow.setContent(infoWindowContent[i][0]);
-          infoWindow.open(map, marker);
+          infowindow.setContent(locations[i][1]);
+          infowindow.setOptions({
+            maxWidth: 200
+          });
+          infowindow.open(map, marker);
         }
       })(marker, i));
-
-      // Center the map to fit all markers on the screen
-      map.fitBounds(bounds);
+      Markers[locations[i][4]] = marker;
     }
 
-    // Set zoom level
-    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-      this.setZoom(14);
-      google.maps.event.removeListener(boundsListener);
-    });
+    locate(0);
+
   }
 
-  // Load initialize function
-  google.maps.event.addDomListener(window, 'load', initMap);
-</script> -->
+  function locate(marker_id) {
+    var myMarker = Markers[marker_id];
+    var markerPosition = myMarker.getPosition();
+    map.setCenter(markerPosition);
+    google.maps.event.trigger(myMarker, 'click');
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 
 </body>
 
 </html>
 
-<script>
+<!-- <script>
   // Initialize and add the map
   function initMap() {
     // The location of Uluru
@@ -193,4 +202,4 @@
   }
 
   window.initMap = initMap;
-</script>
+</script> -->

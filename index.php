@@ -27,12 +27,13 @@ session_start();
   }
 
   .bg {
-    /* The image used */
+    /* filter: blur(8px);
+    -webkit-filter: blur(8px); */
 
     background-image: url("img/bg.jpg");
 
     /* Full height */
-    height: 150%;
+    height: 140%;
 
     /* Center and scale the image nicely */
     background-position: center;

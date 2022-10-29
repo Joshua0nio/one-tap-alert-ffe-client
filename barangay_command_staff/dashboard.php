@@ -34,7 +34,7 @@ if (isset($_GET['year'])) {
                 ?>
               </div>
               <div class="mt-2 mb-0 text-muted text-xs">
-                <a href="resident.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="fire.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-auto">
@@ -59,7 +59,7 @@ if (isset($_GET['year'])) {
                 echo "<h3>" . $query->num_rows . "</h3>";
                 ?></div>
               <div class="mt-2 mb-0 text-muted text-xs">
-                <a href="responder.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="flood.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-auto">
@@ -85,7 +85,7 @@ if (isset($_GET['year'])) {
                 ?>
               </div>
               <div class="mt-2 mb-0 text-muted text-xs">
-                <a href="brgystaff.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="earthquake.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-auto">

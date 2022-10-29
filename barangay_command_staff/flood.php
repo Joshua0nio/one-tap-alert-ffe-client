@@ -3,70 +3,45 @@
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">User Admins</h1>
+    <h1 class="h3 mb-0 text-gray-800">Flood Incident Reports</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="./">Home</a></li>
-      <li class="breadcrumb-item">Users</li>
-      <li class="breadcrumb-item active" aria-current="page">Admins</li>
+      <li class="breadcrumb-item">Incident Reports</li>
+      <li class="breadcrumb-item active" aria-current="page">Flood Incident Reports</li>
     </ol>
   </div>
 
   <div class="col-lg-12">
     <div class="card mb-4">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Admin List</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Flood Incident Reports</h6>
       </div>
       <div class="table-responsive p-3">
         <table class="table align-items-center table-flush table-hover" id="dataTableHover">
           <thead class="thead-light">
             <th>ID</th>
-            <th>Name</th>
-            <th>Contact No.</th>
-            <th>Email Address</th>
-            <th>Address</th>
-            <th>Barangay</th>
-            <th>City</th>
-            <th>Zip Code</th>
+            <th>Resident Name</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Incident Date</th>
             </tr>
           </thead>
           <tfoot>
             <tbody>
               <?php
-              $sql = "SELECT
-            u.id,
-              u.first_name,
-              u.middle_initial,
-              u.last_name,
-              u.contact_no,
-              u.email_address,
-              u.address,
-              u.city,
-              u.zip_code,
-              u.date_added,
-              b.name AS barangay_name
-          FROM users u
-          LEFT JOIN barangays AS b
-            ON u.barangay_id = b.id
-          WHERE u.user_type_id = 1;";
-              $query = $conn->query($sql);
-              while ($row = $query->fetch_assoc()) {
+
+              $sql = "SELECT *, e.user_id, e.emergency_type_id, e.longitude, e.latitude, e.emergency_status_id, u.first_name, u.last_name, u.user_type_id, et.name AS disaster, es.name AS status FROM emergencies AS e LEFT JOIN users AS u ON e.user_id = u.id LEFT JOIN emergency_types AS et ON e.emergency_type_id = et.id LEFT JOIN emergency_statuses AS es ON e.emergency_status_id = es.id WHERE u.user_type_id = 2 AND e.emergency_type_id = '2'";
+              $result = mysqli_query($conn, $sql);
+              while ($row = $result->fetch_assoc()) {
               ?>
                 <tr>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo $row['first_name'] . ' ' . $row['middle_initial'] . ' ' . $row['last_name']; ?></td>
-                  <td><?php echo $row['contact_no']; ?></td>
-                  <td><?php echo $row['email_address']; ?></td>
-                  <td><?php echo $row['address']; ?></td>
-                  <td><?php echo $row['barangay_name']; ?></td>
-                  <td><?php echo $row['city']; ?></td>
-                  <td><?php echo $row['zip_code']; ?></td>
+                  <td><?php echo $row['longitude']; ?></td>
+                  <td><?php echo $row['latitude']; ?></td>
+                  <td><?php echo $row['status']; ?></td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
-                  <td>
-                    <a href=" admin_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i>Edit</a>
-                    <a href=" admin_delete.php?id=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm  btn-flat"><i class="fa fa-trash"></i> Delete</a>
-                  </td>
                 </tr>
               <?php
               }
@@ -75,15 +50,19 @@
         </table>
       </div>
     </div>
+
   </div>
+
 </div>
 <!--Row-->
 
 </div>
 <!---Container Fluid-->
+
 </div>
 
 <!-- Footer -->
+
 <!-- Footer -->
 </div>
 </div>
@@ -100,7 +79,7 @@
 <!-- Page level plugins -->
 <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBY02OUe-MycQkDSpFvc3w9Qrab5mA7uz4&callback=initMap" async defer></script>
 <!-- Page level custom scripts -->
 <script>
   $(document).ready(function() {
