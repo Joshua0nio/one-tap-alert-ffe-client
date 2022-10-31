@@ -1,4 +1,3 @@
-<?php include 'includes/session.php'; ?>
 <?php include "includes/conn.php"; ?>
 
 <!DOCTYPE html>

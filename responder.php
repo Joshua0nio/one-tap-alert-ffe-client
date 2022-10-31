@@ -1,4 +1,3 @@
-<?php include 'includes/session.php'; ?>
 <?php include "navbars.php"; ?>
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">

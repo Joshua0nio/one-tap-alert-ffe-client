@@ -1,5 +1,5 @@
 <?php include "navbars.php"; ?>
-<?php include 'includes/session.php'; ?>
+
 <?php
 
 if (isset($_POST['Submit'])) {
