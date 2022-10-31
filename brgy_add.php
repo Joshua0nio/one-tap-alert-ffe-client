@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <?php
 include "includes/conn.php";
 
@@ -5,24 +6,31 @@ if (isset($_POST['Submit'])) {
   $name = $_POST['name'];
   $tag = $_POST['tag'];
 
-  $sql = "SELECT * FROM barangays WHERE name = '$name'";
-  $query = $conn->query($sql);
-  if ($query->num_rows < 1) {
-    $_SESSION['error'] = 'Barnagay not found';
+
+  $query = "INSERT INTO barangays(`name`, `tag`)VALUES(?, ?)";
+  $stmt = mysqli_prepare($conn, $query);
+  mysqli_stmt_bind_param($stmt, 'ss', $name, $tag);
+
+  if (mysqli_stmt_execute($stmt)) {
+
+    echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
   } else {
-    $row = $query->fetch_assoc();
-    $name = $row['name'];
-    $sql = "INSERT INTO barangays (name, tag, date_added) VALUES ('$name', '$tag', NOW())";
-    if ($conn->query($sql)) {
-      $_SESSION['success'] = 'Barangay added successfully';
-    } else {
-      $_SESSION['error'] = $conn->error;
-    }
+    $_SESSION['error'] = $conn->error;
   }
 
-  header("Location: barangays.php");
-} else {
-  $_SESSION['error'] = 'Fill up add form first';
+  if (!mysqli_stmt_execute($stmt)) {
+
+    // }
+    // if ($_FILES['photo']['name']) {
+    //   move_uploaded_file($_FILES['photo']['tmp_name'], "/img/images/photo" . $_FILES['photo']['name']);
+    //   $photo = "/img/images" . $_FILES['']['name'];
+    //   $photoFileName = basename($_FILES['photo']['name']);
+    // }
+
+  } else {
+    echo "<script>alert(" . $stmt->error . ")</script>";
+  }
+  header('location: barangays.php');
 }
 
 ?>

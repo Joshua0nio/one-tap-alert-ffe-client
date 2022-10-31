@@ -1,5 +1,5 @@
 <?php include "navbars.php"; ?>
-
+<?php include 'includes/session.php'; ?>
 
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
@@ -18,6 +18,9 @@
         <h6 class="m-0 font-weight-bold text-primary">Resident's List</h6>
       </div>
       <div class="table-responsive p-3">
+        <div class="col-lg-12">
+          <a href="resident_add.php" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a>
+        </div>
         <table class="table align-items-center table-flush table-hover" id="dataTableHover">
           <thead class="thead-light">
             <tr>

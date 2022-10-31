@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <?php include "navbars.php"; ?>
 
 <!-- Container Fluid-->
@@ -17,6 +18,9 @@
         <h6 class="m-0 font-weight-bold text-primary">Command Center Staff List</h6>
       </div>
       <div class="table-responsive p-3">
+        <div class="col-lg-12">
+          <a href="ccStaff_add.php" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a>
+        </div>
         <table class="table align-items-center table-flush table-hover" id="dataTableHover">
           <thead class="thead-light">
             <tr>

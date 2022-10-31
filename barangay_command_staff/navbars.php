@@ -8,7 +8,8 @@
         <div class="sidebar-brand-icon">
           <img src="../img/logo/logo.png" width="50px" height="50px">
         </div>
-        <div class="sidebar-brand-text mx-3">One-Tap Alert Admin</div>
+
+        <div class="sidebar-brand-text mx-3">One-Tap Alert</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">

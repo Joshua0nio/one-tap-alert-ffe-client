@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <?php include "navbars.php"; ?>
 
 <!-- Container Fluid-->
@@ -75,17 +76,17 @@
                   <td><?php echo $row['city']; ?></td>
                   <td><?php echo $row['zip_code']; ?></td>
                   <td>
-                    <img src="img/images/front
+                    <img src="img/images/front/
 <?php echo $row['captured_image_front_id']; ?>" style="width:100%;height:auto;" />
                   </td>
 
                   <td>
-                    <img src="img/images/back
+                    <img src="img/images/back/
 <?php echo $row['captured_image_back_id']; ?>" style="width:100%;height:auto;" />
                   </td>
 
                   <td>
-                    <img src="img/images/photo
+                    <img src="img/images/photo/
 <?php echo $row['captured_image_selfie']; ?>" style="width:100%;height:auto;" />
                   </td>
                   <td>

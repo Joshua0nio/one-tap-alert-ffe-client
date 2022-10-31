@@ -1,5 +1,5 @@
 <?php include "navbars.php"; ?>
-
+<?php include 'includes/session.php'; ?>
 
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">

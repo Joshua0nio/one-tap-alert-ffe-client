@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <?php
 // including the database connection file
 include_once("includes/conn.php");

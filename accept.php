@@ -1,4 +1,4 @@
-
+<?php include 'includes/session.php'; ?>
 <?php
 include('includes/conn.php');
 $id = $_GET['id'];

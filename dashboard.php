@@ -1,4 +1,6 @@
+<?php include 'includes/session.php'; ?>
 <?php include "navbars.php"; ?>
+
 <?php
 include 'includes/timezone.php';
 $today = date('Y-m-d');

@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <?php include "navbars.php"; ?>
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
@@ -37,10 +38,11 @@
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Barangay's List</h6>
       </div>
-      <div class="col-lg-12">
-        <a href="brgy_add.php" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a>
-      </div>
+
       <div class="table-responsive p-3">
+        <div class="col-lg-12">
+          <a href="brgy_add.php" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a>
+        </div>
         <table class="table align-items-center table-flush table-hover" id="dataTableHover">
           <thead class="thead-light">
             <tr>

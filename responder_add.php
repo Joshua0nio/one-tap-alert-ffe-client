@@ -1,11 +1,44 @@
+<?php include "navbars.php"; ?>
+<?php include 'includes/session.php'; ?>
 <?php
-session_start();
-include 'includes/session.php';
-include "navbars.php";
-include "includes/conn.php";
+
+if (isset($_POST['Submit'])) {
+
+  $usertypes = "3";
+  $firstname = $_POST['firstname'];
+  $middleInitial = $_POST['MI'];
+  $lastname = $_POST['lastname'];
+  $username = $_POST['username'];
+  $password =  md5($_POST['pass']);
+  $repassword =  md5($_POST['repass']);
+  $email = $_POST['email'];
+  $brgy = $_POST['barangay'];
+  $city = $_POST['city'];
+  $status = "2";
+  $address = $_POST['address'];
+  $contact = $_POST['contactno'];
+  $zipcode = $_POST['zip'];
+
+  $query = "INSERT INTO users(`email_address`,`contact_no`,`username`,`password`,`user_type_id`,`first_name`,`middle_initial`,`last_name`,`zip_code`,`address`,`barangay_id`,`city`,`user_status_id`)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $stmt = mysqli_prepare($conn, $query);
+  mysqli_stmt_bind_param($stmt, 'sssssssssssss', $email, $contact, $username, $password, $usertypes, $firstname, $middleInitial, $lastname, $zipcode, $address, $brgy,  $city, $status);
+
+  if (mysqli_stmt_execute($stmt)) {
+  } else {
+    $_SESSION['error'] = $conn->error;
+  }
+
+  if (!mysqli_stmt_execute($stmt)) {
+    echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
+  } else {
+    echo "<script>alert(" . $stmt->error . ")</script>";
+  }
+  header('location: responder_add.php');
+}
 ?>
 
 <body class="bg-gradient-login">
+
   <!-- Register Content -->
   <div class="container-login">
     <div class="row justify-content-center">
@@ -16,20 +49,10 @@ include "includes/conn.php";
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Profile</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Add Responder / Rescuer</h1>
                   </div>
-                  <form method="post" action="register.php" enctype="multipart/form-data">
+                  <form method="post" action="responder_add.php" enctype="multipart/form-data">
 
-                    <label>Roles:</label>
-                    <div class=" form-group">
-                      <select class="form-control" name="role" aria-label="Default select example">
-                        <option selected>Select your Role:</option>
-                        <option value="3">Responder</option>
-                        <option value="4">Barangay Staff</option>
-                        <option value="5">Command Center Staff</option>
-                      </select>
-                    </div>
-                    <hr>
                     <div class="input-group">
                       <span class="input-group-text">Name:</span>
                       <input type="text" name="firstname" aria-label="First name" placeholder="First name" class="form-control">
@@ -87,27 +110,17 @@ include "includes/conn.php";
                       <label>Zip Code</label>
                       <input type="text" name="zip" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Zip Code">
                     </div>
+                    <hr>
                     <div class="form-group">
-                      <span class="input-group-text">NOTE: Please Upload your ID that proves that you are a staff or rescuer on mandaluyong city and also upload your Photo For confirmation</span>
-                      <label>Front ID</label>
-                      <input class="form-control" type="file" id="formFile" name="front">
-                      <label>Back ID</label>
-                      <input class="form-control" type="file" id="formFile" name="back">
-                      <label>Your Photo</label>
-                      <input class="form-control" type="file" id="formFile" name="photo">
-                    </div>
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-primary btn-block" name="submit">Register</button>
+
+                      <input type="submit" name="Submit" class="btn btn-success btn-sm btn-flat" value="Add Resident">
+                      <a href="responder.php" class="btn btn-danger btn-sm  btn-flat"> Close </a>
                     </div>
                     <hr>
 
                   </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="font-weight-bold small" href="index.php">Already have an account?</a>
-                  </div>
-                  <div class="text-center">
-                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -115,6 +128,8 @@ include "includes/conn.php";
         </div>
       </div>
     </div>
+  </div>
+  </div>
   </div>
   <!-- Register Content -->
   <script src="vendor/jquery/jquery.min.js"></script>
