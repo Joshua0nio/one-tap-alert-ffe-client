@@ -2,8 +2,30 @@
 
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
+  <?php
+  if (isset($_SESSION['error'])) {
+    echo "
+            <div class='alert alert-danger alert-dismissible'>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <h4><i class='icon fa fa-warning'></i> Error!</h4>
+              " . $_SESSION['error'] . "
+            </div>
+          ";
+    unset($_SESSION['error']);
+  }
+  if (isset($_SESSION['success'])) {
+    echo "
+            <div class='alert alert-success alert-dismissible'>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <h4><i class='icon fa fa-check'></i> Success!</h4>
+              " . $_SESSION['success'] . "
+            </div>
+          ";
+    unset($_SESSION['success']);
+  }
+  ?>
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Residents Registration Approval</h1>
+    <h1 class="h3 mb-0 text-gray-800">Command Center Staff Registration Approval</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="./">Home</a></li>
       <li class="breadcrumb-item">Users Registration Approval</li>
@@ -93,7 +115,7 @@
                   </td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
                   <td>
-                    <a href=" accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
+                    <a href=" ccStaff_accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
                     <a href=" reject.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Reject</a>
                   </td>
                 </tr>

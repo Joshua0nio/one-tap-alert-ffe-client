@@ -266,6 +266,14 @@ if (isset($_GET['year'])) {
 <script src="js/ruang-admin.min.js"></script>
 <script src="vendor/chart.js/Chart.min.js"></script>
 <script src="js/demo/chart-area-demo.js"></script>
+<script src="lib/chart/chart.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/tempusdominus/js/moment.min.js"></script>
+<script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="js/main.js"></script>
 <?php
 $and = 'AND YEAR(date_added) = ' . $year;
 $months = array();

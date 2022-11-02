@@ -75,7 +75,7 @@
                   <td><?php echo $row['city']; ?></td>
                   <td><?php echo $row['zip_code']; ?></td>
                   <td>
-                    <img src="img/images/front
+                    <img src="img/images/front/
 <?php echo $row['captured_image_front_id']; ?>" style="width:100%;height:auto;" />
                   </td>
 
@@ -85,7 +85,7 @@
                   </td>
 
                   <td>
-                    <img src="img/images/photo
+                    <img src="img/images/photo/
 <?php echo $row['captured_image_selfie']; ?>" style="width:100%;height:auto;" />
                   </td>
                   <td>
@@ -93,7 +93,7 @@
                   </td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
                   <td>
-                    <a href=" accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
+                    <a href=" brgyStff_accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
                     <a href=" reject.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Reject</a>
                   </td>
                 </tr>

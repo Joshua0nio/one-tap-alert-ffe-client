@@ -45,20 +45,11 @@ if (isset($_POST['submit'])) {
   mysqli_stmt_bind_param($stmt, 'ssssssssssssssss', $email, $contact, $username, $password, $usertypes, $firstname, $middleInitial, $lastname, $zipcode, $address, $brgy,  $city, $status, $filename1, $filename2, $filename3);
 
 
-  // $query = "INSERT INTO users('email_address', 'contact_no', 'username', 'password','user_type_id', 'first_name', 'middle_initial','last_name','zip_code', 'address', 'barangay_id', 'city', 'user_status_id', 'capture_image_front_id', 'capture_image_back_id', 'captured_image_selfie') VALUES ('" . $email . "', '" . $contact . "', 
-  // '" . $username . "', '" . $password . "', '" . $usertypes . "', '" . $firstname . "', '" . $middleInitial . "', '" . $lastname . "', '" . $zipcode . "', 
-  // '" . $address . "', '" . $brgy . "','" . $city . "', '" . 1 . "', '" . $filename1 . "', '" . $filename2 . "' ,'" . $filename3 . "')";
-  if (mysqli_stmt_execute($stmt)) {
+  if (!mysqli_stmt_execute($stmt)) {
     move_uploaded_file($tempname1, $folder1);
     move_uploaded_file($tempname2, $folder2);
     move_uploaded_file($tempname3, $folder3);
     echo "<script>alert('Your account request is now pending for approval. Please wait for confirmation. Thank you.')</script>";
-  } else {
-    $_SESSION['error'] = $conn->error;
-  }
-
-  if (!mysqli_stmt_execute($stmt)) {
-
     // }
     // if ($_FILES['photo']['name']) {
     //   move_uploaded_file($_FILES['photo']['tmp_name'], "/img/images/photo" . $_FILES['photo']['name']);

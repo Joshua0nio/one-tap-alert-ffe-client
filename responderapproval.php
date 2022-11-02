@@ -93,7 +93,7 @@
                   </td>
                   <td><?php echo date('M d, Y', strtotime($row['date_added'])) ?></td>
                   <td>
-                    <a href=" accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
+                    <a href=" responder_accept.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Accept</a>
                     <a href=" reject.php?id=<?php echo $row['ID'] ?>" class="btn btn-secondary my-2">Reject</a>
                   </td>
                 </tr>

@@ -119,7 +119,7 @@ if (isset($_GET['year'])) {
     </div>
 
     <!-- Area Chart -->
-    <div class="col-xl-14 col-lg-10">
+    <!-- <div class="col-xl-14 col-lg-10">
       <div class="card mb-4">
         <div class="box">
           <div class="box-header with-border">
@@ -145,16 +145,48 @@ if (isset($_GET['year'])) {
           <div class="box-body">
             <div class="chart">
               <br>
-              <div id="legend" class="text-center"></div>
-              <canvas id="barChart" style="height:300px"></canvas>
+
+              <canvas id="disaster" style="height:300px"></canvas>
             </div>
           </div>
         </div>
       </div>
+    </div> -->
+
+    <div class="container-fluid pt-4 px-4">
+      <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+          <div class="bg-body text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h6 class="mb-0">Monthly Incident Reports</h6>
+              <form class="form-inline">
+                <div class="form-group">
+                  <label>Select Year: </label>
+                  <select class="form-control input-sm" id="select_year">
+                    <?php
+                    for ($i = 2015; $i <= 2065; $i++) {
+                      $selected = ($i == $year) ? 'selected' : '';
+                      echo "
+                            <option value='" . $i . "' " . $selected . ">" . $i . "</option>
+                          ";
+                    }
+                    ?>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <canvas id="disaster"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+          <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Pie Chart</h6>
+            <canvas id="pie-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-
-
     <!-- Modal Logout -->
 
 
@@ -189,6 +221,18 @@ if (isset($_GET['year'])) {
 <script src="../js/ruang-admin.min.js"></script>
 <script src="../vendor/chart.js/Chart.min.js"></script>
 <script src="../js/demo/chart-area-demo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script src="js/demo/chart-area-demo.js"></script>
+<script src="lib/chart/chart.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/tempusdominus/js/moment.min.js"></script>
+<script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="js/main.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization"></script>
 <?php
 $and = 'AND YEAR(date_added) = ' . $year;
 $months = array();
@@ -196,16 +240,19 @@ $fire = array();
 $flood = array();
 $earthquake = array();
 $notresponded = array();
+
+
+
 for ($m = 1; $m <= 12; $m++) {
-  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '3' $and AND e.emergency_type_id = '1'";
+  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '1' $and AND e.emergency_type_id = '1'";
   $oquery = $conn->query($sql);
   array_push($fire, $oquery->num_rows);
 
-  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '3' $and AND e.emergency_type_id = '2'";
+  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '1' $and AND e.emergency_type_id = '2'";
   $lquery = $conn->query($sql);
   array_push($flood, $lquery->num_rows);
 
-  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '3' $and AND e.emergency_type_id = '3'";
+  $sql = "SELECT * FROM emergencies e WHERE MONTH(e.date_added) = '$m' AND e.emergency_status_id = '1' $and AND e.emergency_type_id = '3'";
   $lquery = $conn->query($sql);
   array_push($earthquake, $lquery->num_rows);
 
@@ -227,89 +274,46 @@ $notresponded = json_encode($notresponded);
 ?>
 <?php include '../includes/scripts.php'; ?>
 <script>
-  $(function() {
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChart = new Chart(barChartCanvas)
-    var barChartData = {
+  var ctx1 = $(" #disaster").get(0).getContext("2d");
+  var myChart1 = new Chart(ctx1, {
+    type: "bar",
+    data: {
       labels: <?php echo $months; ?>,
       datasets: [{
-          label: 'Fire',
-          fillColor: 'rgba(210, 214, 222, 1)',
-          strokeColor: 'rgba(210, 214, 222, 1)',
-          pointColor: 'rgba(210, 214, 222, 1)',
-          pointStrokeColor: '#c1c7d1',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: <?php echo $fire; ?>
-        },
-        {
-          label: 'Flood',
-          fillColor: 'rgba(60,141,188,0.9)',
-          strokeColor: 'rgba(60,141,188,0.8)',
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: <?php echo $flood; ?>
-        },
-        {
-          label: 'Earthquake',
-          fillColor: 'rgba(60,141,188,0.9)',
-          strokeColor: 'rgba(60,141,188,0.8)',
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: <?php echo $earthquake; ?>
-        },
-        {
-          label: 'Not Responded',
-          fillColor: 'rgba(60,141,188,0.9)',
-          strokeColor: 'rgba(60,141,188,0.8)',
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: <?php echo $notresponded; ?>
-        }
-      ]
+        label: "Fire",
+        data: <?php echo $fire; ?>,
+        backgroundColor: "rgba(235, 22, 22, .7)"
+      }, {
+        label: "Flood",
+        data: <?php echo $flood; ?>,
+        backgroundColor: "rgba(235, 22, 22, .5)"
+      }, {
+        label: "Earthquake",
+        data: <?php echo $earthquake; ?>,
+        backgroundColor: "rgba(235, 22, 22, .3)"
+      }]
+    },
+    options: {
+      responsive: true
     }
-    barChartData.datasets[1].fillColor = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor = '#00a65a'
-    var barChartOptions = {
-      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-      scaleBeginAtZero: true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines: true,
-      //String - Colour of the grid lines
-      scaleGridLineColor: 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth: 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines: true,
-      //Boolean - If there is a stroke on each bar
-      barShowStroke: true,
-      //Number - Pixel width of the bar stroke
-      barStrokeWidth: 2,
-      //Number - Spacing between each of the X value sets
-      barValueSpacing: 5,
-      //Number - Spacing between data sets within X values
-      barDatasetSpacing: 1,
-      //String - A legend template
-      legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to make the chart responsive
-      responsive: true,
-      maintainAspectRatio: true
-    }
-
-    barChartOptions.datasetFill = false
-    var myChart = barChart.Bar(barChartData, barChartOptions)
-    document.getElementById('legend').innerHTML = myChart.generateLegend();
   });
 </script>
+<script>
+  $(function() {
+    $('#select_year').change(function() {
+      window.location.href = '../barangay_command_staff/dashboard.php?year=' + $(this).val();
+    });
+  });
+</script>
+<?php
+
+
+
+?>
+<script type="text/javascript">
+
+</script>
+
 </body>
 
 </html>

@@ -10,7 +10,6 @@ if ($conn->query($query) === TRUE) {
 }
 
 $conn->close();
-header('location: residentapproval.php');
+header('location: responderapproval.php');
 
 ?>
-

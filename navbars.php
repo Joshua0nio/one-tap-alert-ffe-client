@@ -1,4 +1,3 @@
-<?php include 'includes/session.php'; ?>
 <?php include "header.php"; ?>
 
 <body id="page-top">
@@ -43,16 +42,16 @@
 
                 echo "<h3>" . $query->num_rows . "</h3>";
                 ?></span></a>
-            <a class="collapse-item" href="commandStaffApproval.php">Command Center Staff<span class="btn btn-success btn-sm btn-flat">
+            <a class="collapse-item" href="commandStaffApproval.php">Command Center Staff<small class="btn btn-success btn-sm btn-flat">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '4' AND user_status_id = '1'";
+                $sql = "SELECT * FROM users WHERE user_type_id = '5' AND user_status_id = '1'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
-                ?></span></a>
+                ?></small></a>
             <a class="collapse-item" href="barangayStaffApproval.php">Barangay Staff<span class="btn btn-success btn-sm btn-flat">
                 <?php
-                $sql = "SELECT * FROM users WHERE user_type_id = '5' AND user_status_id = '1'";
+                $sql = "SELECT * FROM users WHERE user_type_id = '4' AND user_status_id = '1'";
                 $query = $conn->query($sql);
 
                 echo "<h3>" . $query->num_rows . "</h3>";
